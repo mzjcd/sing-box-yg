@@ -32,6 +32,7 @@ if [[ "$reset" =~ ^[Yy]$ ]]; then
 #crontab rmcron >/dev/null 2>&1
 #rm rmcron
 bash -c 'ps aux | grep $(whoami) | grep -v "sshd\|bash\|grep" | awk "{print \$2}" | xargs -r kill -9 >/dev/null 2>&1' >/dev/null 2>&1
+devil www del ${snb}.${USERNAME}.serv00.net > /dev/null 2>&1
 devil www del ${USERNAME}.serv00.net > /dev/null 2>&1
 sed -i '/export PATH="\$HOME\/bin:\$PATH"/d' "${HOME}/.bashrc" >/dev/null 2>&1
 source "${HOME}/.bashrc" >/dev/null 2>&1
@@ -48,6 +49,43 @@ FILE_PATH="${HOME}/domains/${USERNAME}.serv00.net/public_html"
 WORKDIR="${HOME}/domains/${USERNAME}.serv00.net/logs"
 [ -d "$FILE_PATH" ] || mkdir -p "$FILE_PATH"
 [ -d "$WORKDIR" ] || (mkdir -p "$WORKDIR" && chmod 777 "$WORKDIR")
+keep_path="${HOME}/domains/${snb}.${USERNAME}.serv00.net/public_nodejs"
+[ -d "$keep_path" ] || mkdir -p "$keep_path"
+curl -sL https://raw.githubusercontent.com/yonggekkk/sing-box-yg/main/app.js -o "$keep_path"/app.js
+sed -i '' "15s/name/$snb/g" "$keep_path"/app.js
+sed -i '' "60s/key/$UUID/g" "$keep_path"/app.js
+sed -i '' "75s/name/$USERNAME/g" "$keep_path"/app.js
+sed -i '' "75s/where/$snb/g" "$keep_path"/app.js
+
+resallport(){
+portlist=$(devil port list | grep -E '^[0-9]+[[:space:]]+[a-zA-Z]+' | sed 's/^[[:space:]]*//')
+if [[ -z "$portlist" ]]; then
+yellow "无端口"
+else
+while read -r line; do
+port=$(echo "$line" | awk '{print $1}')
+port_type=$(echo "$line" | awk '{print $2}')
+yellow "删除端口 $port ($port_type)"
+devil port del "$port_type" "$port"
+done <<< "$portlist"
+fi
+check_port
+hyp=$(jq -r '.inbounds[0].listen_port' $WORKDIR/config.json)
+vlp=$(jq -r '.inbounds[3].listen_port' $WORKDIR/config.json)
+vmp=$(jq -r '.inbounds[4].listen_port' $WORKDIR/config.json)
+sed -i '' "12s/$hyp/$hy2_port/g" $WORKDIR/config.json
+sed -i '' "33s/$hyp/$hy2_port/g" $WORKDIR/config.json
+sed -i '' "54s/$hyp/$hy2_port/g" $WORKDIR/config.json
+sed -i '' "75s/$vlp/$vless_port/g" $WORKDIR/config.json
+sed -i '' "102s/$vmp/$vmess_port/g" $WORKDIR/config.json
+sed -i '' -e "17s|'$vlp'|'$vless_port'|" serv00keep.sh
+sed -i '' -e "18s|'$vmp'|'$vmess_port'|" serv00keep.sh
+sed -i '' -e "19s|'$hyp'|'$hy2_port'|" serv00keep.sh
+bash -c 'ps aux | grep $(whoami) | grep -v "sshd\|bash\|grep" | awk "{print \$2}" | xargs -r kill -9 >/dev/null 2>&1' >/dev/null 2>&1
+sleep 1
+curl -sk "http://${snb}.${USERNAME}.serv00.net/up" > /dev/null 2>&1
+sleep 5
+}
 
 read_ip(){
 ym=("$HOSTNAME" "cache$nb.serv00.com" "web$nb.serv00.com")
@@ -1126,6 +1164,35 @@ cat list.txt
 sleep 2
 rm -rf sb.log core tunnel.yml tunnel.json fake_useragent_0.2.0.json
 }
+
+echo '#!/bin/bash
+red() { echo -e "\e[1;91m$1\033[0m"; }
+green() { echo -e "\e[1;32m$1\033[0m"; }
+yellow() { echo -e "\e[1;33m$1\033[0m"; }
+purple() { echo -e "\e[1;35m$1\033[0m"; }
+USERNAME=$(whoami | tr '\''[:upper:]'\'' '\''[:lower:]'\'')
+WORKDIR="${HOME}/domains/${USERNAME}.serv00.net/logs"
+snb=$(hostname | awk -F '\''.'\'' '\''{print $1}'\'')
+' > webport.sh
+declare -f resallport >> webport.sh
+declare -f check_port >> webport.sh
+echo 'resallport' >> webport.sh
+chmod +x webport.sh
+green "开始安装多功能主页，请稍等……"
+devil www del ${snb}.${USERNAME}.serv00.net > /dev/null 2>&1
+devil www add ${USERNAME}.serv00.net php > /dev/null 2>&1
+devil www add ${snb}.${USERNAME}.serv00.net nodejs /usr/local/bin/node18 > /dev/null 2>&1
+ln -fs /usr/local/bin/node18 ~/bin/node > /dev/null 2>&1
+ln -fs /usr/local/bin/npm18 ~/bin/npm > /dev/null 2>&1
+mkdir -p ~/.npm-global
+npm config set prefix '~/.npm-global'
+echo 'export PATH=~/.npm-global/bin:~/bin:$PATH' >> $HOME/.bash_profile && source $HOME/.bash_profile
+rm -rf $HOME/.npmrc > /dev/null 2>&1
+cd "$keep_path"
+npm install basic-auth express dotenv axios --silent > /dev/null 2>&1
+rm $HOME/domains/${snb}.${USERNAME}.serv00.net/public_nodejs/public/index.html > /dev/null 2>&1
+devil www restart ${snb}.${USERNAME}.serv00.net
+green "安装完毕，多功能主页地址：http://${snb}.${USERNAME}.serv00.net" && sleep 2
 
 if [[ "$resport" =~ ^[Yy]$ ]]; then
 portlist=$(devil port list | grep -E '^[0-9]+[[:space:]]+[a-zA-Z]+' | sed 's/^[[:space:]]*//')
