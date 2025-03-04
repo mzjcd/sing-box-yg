@@ -57,6 +57,8 @@ sed -i '' "60s/key/$UUID/g" "$keep_path"/app.js
 sed -i '' "75s/name/$USERNAME/g" "$keep_path"/app.js
 sed -i '' "75s/where/$snb/g" "$keep_path"/app.js
 fi
+[ -n "$ARGO_DOMAIN" ] && echo "$ARGO_DOMAIN" > $WORKDIR/ARGO_DOMAIN.txt && ARGO_DOMAIN=$(<$WORKDIR/ARGO_DOMAIN.txt)
+[ -n "$ARGO_AUTH" ] && echo "$ARGO_AUTH" > $WORKDIR/ARGO_AUTH.txt && ARGO_AUTH=$(<$WORKDIR/ARGO_AUTH.txt)
 
 resallport(){
 portlist=$(devil port list | grep -E '^[0-9]+[[:space:]]+[a-zA-Z]+' | sed 's/^[[:space:]]*//')
