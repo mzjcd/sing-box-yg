@@ -50,15 +50,15 @@ WORKDIR="${HOME}/domains/${USERNAME}.serv00.net/logs"
 [ -d "$WORKDIR" ] || (mkdir -p "$WORKDIR" && chmod 777 "$WORKDIR")
 keep_path="${HOME}/domains/${snb}.${USERNAME}.serv00.net/public_nodejs"
 [ -d "$keep_path" ] || mkdir -p "$keep_path"
+[ -n "$ARGO_DOMAIN" ] && echo "$ARGO_DOMAIN" > $WORKDIR/ARGO_DOMAIN.txt || ARGO_DOMAIN=$(<$WORKDIR/ARGO_DOMAIN.txt)
+[ -n "$ARGO_AUTH" ] && echo "$ARGO_AUTH" > $WORKDIR/ARGO_AUTH.txt || ARGO_AUTH=$(<$WORKDIR/ARGO_AUTH.txt)
+[ -n "$UUID" ] && echo "$UUID" > $WORKDIR/UUID.txt || UUID=$(<$WORKDIR/UUID.txt)
+[ -n "$reym" ] && echo "$reym" > $WORKDIR/reym.txt || reym=$(<$WORKDIR/reym.txt)
 curl -sL https://raw.githubusercontent.com/yonggekkk/sing-box-yg/main/app.js -o "$keep_path"/app.js
 sed -i '' "15s/name/$snb/g" "$keep_path"/app.js
 sed -i '' "60s/key/$UUID/g" "$keep_path"/app.js
 sed -i '' "75s/name/$USERNAME/g" "$keep_path"/app.js
 sed -i '' "75s/where/$snb/g" "$keep_path"/app.js
-[ -n "$ARGO_DOMAIN" ] && echo "$ARGO_DOMAIN" > $WORKDIR/ARGO_DOMAIN.txt && ARGO_DOMAIN=$(<$WORKDIR/ARGO_DOMAIN.txt)
-[ -n "$ARGO_AUTH" ] && echo "$ARGO_AUTH" > $WORKDIR/ARGO_AUTH.txt && ARGO_AUTH=$(<$WORKDIR/ARGO_AUTH.txt)
-[ -n "$UUID" ] && echo "$UUID" > $WORKDIR/UUID.txt && UUID=$(<$WORKDIR/UUID.txt)
-[ -n "$reym" ] && echo "$reym" > $WORKDIR/reym.txt && reym=$(<$WORKDIR/reym.txt)
 
 resallport(){
 portlist=$(devil port list | grep -E '^[0-9]+[[:space:]]+[a-zA-Z]+' | sed 's/^[[:space:]]*//')
@@ -148,6 +148,7 @@ echo "$UUID" > UUID.txt
 fi
 if [[ -z "$reym" ]]; then
 reym=$USERNAME.serv00.net
+echo "$reym" > reym.txt
 fi
 if [[ -z "$vless_port" ]] || [[ -z "$vmess_port" ]] || [[ -z "$hy2_port" ]]; then
 check_port
