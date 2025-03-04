@@ -1199,7 +1199,7 @@ cd "$keep_path"
 npm install basic-auth express dotenv axios --silent > /dev/null 2>&1
 rm $HOME/domains/${snb}.${USERNAME}.serv00.net/public_nodejs/public/index.html > /dev/null 2>&1
 devil www restart ${snb}.${USERNAME}.serv00.net
-green "安装完毕，多功能主页地址：http://${snb}.${USERNAME}.serv00.net" && sleep 2
+green "安装完毕，多功能主页地址：http://${snb}.${USERNAME}.serv00.net"
 fi
 
 if [[ "$resport" =~ ^[Yy]$ ]]; then
