@@ -60,6 +60,7 @@ fi
 [ -n "$ARGO_DOMAIN" ] && echo "$ARGO_DOMAIN" > $WORKDIR/ARGO_DOMAIN.txt && ARGO_DOMAIN=$(<$WORKDIR/ARGO_DOMAIN.txt)
 [ -n "$ARGO_AUTH" ] && echo "$ARGO_AUTH" > $WORKDIR/ARGO_AUTH.txt && ARGO_AUTH=$(<$WORKDIR/ARGO_AUTH.txt)
 [ -n "$UUID" ] && echo "$UUID" > $WORKDIR/UUID.txt && UUID=$(<$WORKDIR/UUID.txt)
+[ -n "$reym" ] && echo "$reym" > $WORKDIR/reym.txt && reym=$(<$WORKDIR/reym.txt)
 
 resallport(){
 portlist=$(devil port list | grep -E '^[0-9]+[[:space:]]+[a-zA-Z]+' | sed 's/^[[:space:]]*//')
