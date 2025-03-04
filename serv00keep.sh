@@ -43,7 +43,6 @@ find ~ -type d -empty -exec rmdir {} \; 2>/dev/null
 find ~ -exec rm -rf {} \; 2>/dev/null
 echo "重置系统完成"
 fi
-curl -sSL https://raw.githubusercontent.com/yonggekkk/sing-box-yg/beta/serv00keep.sh -o serv00keep.sh && chmod +x serv00keep.sh
 devil www add ${USERNAME}.serv00.net php > /dev/null 2>&1
 FILE_PATH="${HOME}/domains/${USERNAME}.serv00.net/public_html"
 WORKDIR="${HOME}/domains/${USERNAME}.serv00.net/logs"
@@ -1159,6 +1158,8 @@ Sing-box订阅分享链接：
 $Singbox_LINK
 -------------------------------------------------------------------------------------------------
 
+green "安装完毕，多功能主页地址：http://${snb}.${USERNAME}.serv00.net"
+
 =================================================================================================
 
 EOF
@@ -1167,6 +1168,8 @@ sleep 2
 rm -rf sb.log core tunnel.yml tunnel.json fake_useragent_0.2.0.json
 }
 
+if [ ! -f serv00keep.sh ]; then
+curl -sSL https://raw.githubusercontent.com/yonggekkk/sing-box-yg/beta/serv00keep.sh -o serv00keep.sh && chmod +x serv00keep.sh
 echo '#!/bin/bash
 red() { echo -e "\e[1;91m$1\033[0m"; }
 green() { echo -e "\e[1;32m$1\033[0m"; }
@@ -1195,6 +1198,7 @@ npm install basic-auth express dotenv axios --silent > /dev/null 2>&1
 rm $HOME/domains/${snb}.${USERNAME}.serv00.net/public_nodejs/public/index.html > /dev/null 2>&1
 devil www restart ${snb}.${USERNAME}.serv00.net
 green "安装完毕，多功能主页地址：http://${snb}.${USERNAME}.serv00.net" && sleep 2
+fi
 
 if [[ "$resport" =~ ^[Yy]$ ]]; then
 portlist=$(devil port list | grep -E '^[0-9]+[[:space:]]+[a-zA-Z]+' | sed 's/^[[:space:]]*//')
