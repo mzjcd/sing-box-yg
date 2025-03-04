@@ -59,6 +59,7 @@ sed -i '' "75s/where/$snb/g" "$keep_path"/app.js
 fi
 [ -n "$ARGO_DOMAIN" ] && echo "$ARGO_DOMAIN" > $WORKDIR/ARGO_DOMAIN.txt && ARGO_DOMAIN=$(<$WORKDIR/ARGO_DOMAIN.txt)
 [ -n "$ARGO_AUTH" ] && echo "$ARGO_AUTH" > $WORKDIR/ARGO_AUTH.txt && ARGO_AUTH=$(<$WORKDIR/ARGO_AUTH.txt)
+[ -n "$UUID" ] && echo "$UUID" > $WORKDIR/UUID.txt && UUID=$(<$WORKDIR/UUID.txt)
 
 resallport(){
 portlist=$(devil port list | grep -E '^[0-9]+[[:space:]]+[a-zA-Z]+' | sed 's/^[[:space:]]*//')
@@ -143,12 +144,8 @@ okip(){
 
 uuidport(){
 if [[ -z "$UUID" ]]; then
-if [ ! -e UUID.txt ]; then
 UUID=$(uuidgen -r)
 echo "$UUID" > UUID.txt
-else
-UUID=$(<UUID.txt)
-fi
 fi
 if [[ -z "$reym" ]]; then
 reym=$USERNAME.serv00.net
