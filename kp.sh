@@ -7,7 +7,7 @@
 # 注意[]"",:这些符号不要乱删，按规律对齐
 # 每行一个{serv00服务器}，一个服务也可，末尾用,间隔，最后一个服务器末尾无需用,间隔
 ACCOUNTS='[
-{"RES":"n", "REP":"n", "SSH_USER":"p72ntmni", "SSH_PASS":" h69Sr6XTkbg4", "REALITY":"s15.p72ntmni.serv00.net", "SUUID":"843da0db-b02a-4e51-8ab4-cd6f8409d9de", "TCP1_PORT":"vless的tcp端口", "TCP2_PORT":"vmess的tcp端口", "UDP_PORT":"hy2的udp端口", "HOST":"s1.serv00.com", "ARGO_DOMAIN":"", "ARGO_AUTH":""},
+{"RES":"n", "REP":"n", "SSH_USER":"p72ntmni", "SSH_PASS":" h69Sr6XTkbg4", "REALITY":"s15.p72ntmni.serv00.net", "SUUID":"c9b360e0-3e35-40b2-9b15-f1b3adeeffae", "TCP1_PORT":"vless的tcp端口", "TCP2_PORT":"vmess的tcp端口", "UDP_PORT":"hy2的udp端口", "HOST":"s1.serv00.com", "ARGO_DOMAIN":"", "ARGO_AUTH":""},
 {"RES":"y", "REP":"y", "SSH_USER":"123456", "SSH_PASS":"7890000", "REALITY":"time.is", "SUUID":"73203ee6-b3fa-4a3d-b5df-6bb2f55073ad", "TCP1_PORT":"", "TCP2_PORT":"", "UDP_PORT":"", "HOST":"s16.serv00.com", "ARGO_DOMAIN":"你的argo固定域名", "ARGO_AUTH":"eyJhIjoiOTM3YzFjYWI88552NTFiYTM4ZTY0ZDQzRmlNelF0TkRBd1pUQTRNVEJqTUdVeCJ9"}
 ]'
 run_remote_command() {
